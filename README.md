@@ -4,6 +4,7 @@ Use [Traject](http://github.com/traject-project/traject) to write to
 a Solr index using the `solrj` java library.
 
 **This gem requires JRuby and Traject >= 2.0**
+
 **This gem is not yet released**
 
 ## Notes on using this gem
