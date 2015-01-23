@@ -9,9 +9,8 @@ Gem::Specification.new do |spec|
   spec.version       = Traject::SolrJWriter::VERSION
   spec.authors       = ["Bill Dueber"]
   spec.email         = ["bill@dueber.com"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
+  spec.summary       = %q{Use Traject into index data into Solr using solrj under JRuby}
+  spec.homepage      = "https://github.com/traject-project/traject-solrj_writer"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
