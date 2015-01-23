@@ -3,6 +3,8 @@
 Use [Traject](http://github.com/traject-project/traject) to write to
 a Solr index using the `solrj` java library.
 
+**This gem requires JRuby and Traject >= 2.0**
+
 ## Notes on using this gem
   * Our benchmarking indicates that `Traject::SolrJsonWriter` (included with Traject) outperforms
     this library by a notable swath. Use that if you can.
@@ -23,7 +25,7 @@ require 'traject/solrj_writer'
 
 settings do
   # Arguments for any solr writer
-  provide "solr.url", ENV["SOLR_URL"]
+  provide "solr.url", ENV["SOLR_URL"] | 'http://localhost:8983/solr/core1'
   provide "solr_writer.commit_on_close", "true"
   provide "solr_writer.thread_pool", 2
   provide "solr_writer.batch_size", 50
@@ -44,16 +46,16 @@ settings do
 
 ### Generic Solr settings (used for both SolrJWriter and SolrJsonWriter)
 
-* solr.url: Your solr url (required)
-* solr_writer.commit_on_close:  If true (or string 'true'), send a commit to solr
+* `solr.url`: Your solr url (required)
+* `solr_writer.commit_on_close`:  If true (or string 'true'), send a commit to solr
   at end of #process.
 
-* solr_writer.batch_size:      If non-nil and more than 1, send documents to
+* `solr_writer.batch_size`:      If non-nil and more than 1, send documents to
   solr in batches of solrj_writer.batch_size. If nil/1,
   however, an http transaction with solr will be done
   per doc. DEFAULT to 100, which seems to be a sweet spot.
 
-* solr_writer.thread_pool:      Defaults to 1. A thread pool is used for submitting docs
+* `solr_writer.thread_pool`:      Defaults to 1. A thread pool is used for submitting docs
   to solr. Set to 0 or nil to disable threading. Set to 1,
   there will still be a single bg thread doing the adds. For
   very fast Solr servers and very fast indexing processes, may
@@ -62,19 +64,19 @@ settings do
 
 ### SolrJ-specific settings
 
-* solrj_writer.server_class_name:  Defaults to "HttpSolrServer". You can specify
+* `solrj_writer.server_class_name`:  Defaults to "HttpSolrServer". You can specify
   another Solr Server sub-class, but it has
   to take a one-arg url constructor. Maybe
   subclass this writer class and overwrite
   instantiate_solr_server! otherwise
 
-* solrj.jar_dir: Custom directory containing all of the SolrJ jars. All
+* `solrj.jar_dir`: Custom directory containing all of the SolrJ jars. All
   jars in this dir will be loaded. Otherwise,
   we load our own packaged solrj jars. This setting
   can't really be used differently in the same app instance,
   since jars are loaded globally.
 
-* solrj_writer.parser_class_name: A String name of a class in package
+* `solrj_writer.parser_class_name`: A String name of a class in package
   org.apache.solr.client.solrj.impl,
   we'll instantiate one with a zero-arg
   constructor, and pass it as an arg to setParser on
@@ -105,7 +107,7 @@ Or install it yourself as:
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/traject-solrj_writer/fork )
+1. Fork it ( https://github.com/traject-project/traject-solrj_writer/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
