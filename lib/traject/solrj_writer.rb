@@ -121,6 +121,7 @@ class Traject::SolrJWriter
       Object.const_set("SolrInputDocument", org.apache.solr.common.SolrInputDocument) unless defined? ::SolrInputDocument
     rescue NameError  => e
       included_jar_dir = File.expand_path("../../vendor/solrj/lib", File.dirname(__FILE__))
+      puts included_jar_dir
 
       jardir = settings["solrj.jar_dir"] || included_jar_dir
       Dir.glob("#{jardir}/*.jar") do |x|
