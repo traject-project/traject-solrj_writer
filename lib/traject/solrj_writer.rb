@@ -165,7 +165,10 @@ class Traject::SolrJWriter
     # newer solr_writer settings, so the old config files still work
     
     %w[commit_on_close batch_size thread_pool].each do |s|
-      @settings["solr_writer.#{s}"] ||= @settings["solrj_writer.#{s}"]
+      swkey = "solr_writer.#{s}"
+      sjwkey = "solrj_writer.#{s}"
+      @settings[swkey] = @settings[sjwkey] unless @settings[sjwkey].nil?
+
     end
     
     settings_check!(settings)

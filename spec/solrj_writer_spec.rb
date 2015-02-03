@@ -204,6 +204,20 @@ describe "Traject::SolrJWriter" do
     test_handles_errors
   end
 
+  describe "alises solrj_writer* to solr_writer* settings" do
+   # commit_on_close batch_size thread_pool
+
+    end
+    it "aliases as needed" do
+      @settings.merge!("solrj_writer.commit_on_close" => true, "solrj_writer.batch_size" => 5, "solrj_writer.thread_pool" => 2)
+      create_solrj_writer
+      assert_equal(true, @writer.settings['solr_writer.commit_on_close'], "commit_on_close")
+      assert_equal(5, @writer.settings['solr_writer.batch_size'], "batch_size")
+      assert_equal(2, @writer.settings['solr_writer.thread_pool'], "thread_pool")
+
+
+    end
+
 end
 
 require 'thread' # Mutex
