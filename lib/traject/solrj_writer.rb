@@ -160,6 +160,14 @@ class Traject::SolrJWriter
 
   def initialize(argSettings)
     @settings = Traject::Indexer::Settings.new(argSettings)
+    
+    # Let's go ahead an alias out the old solrj_writer settings to the
+    # newer solr_writer settings, so the old config files still work
+    
+    %w[commit_on_close batch_size thread_pool].each do |s|
+      @settings["solr_writer.#{s}"] ||= @settings["solrj_writer.#{s}"]
+    end
+    
     settings_check!(settings)
 
     ensure_solrj_loaded!
@@ -179,7 +187,7 @@ class Traject::SolrJWriter
 
     # if our thread pool settings are 0, it'll just create a null threadpool that
     # executes in calling context.
-    @thread_pool = Traject::ThreadPool.new( @settings["solrj_writer.thread_pool"].to_i )
+    @thread_pool = Traject::ThreadPool.new( @settings['solr_writer.thread_pool'].to_i )
 
     @debug_ascii_progress = (@settings["debug_ascii_progress"].to_s == "true")
 
@@ -357,7 +365,7 @@ class Traject::SolrJWriter
     logger.debug "SolrJWriter: Shutting down thread pool, waiting if needed..."
     elapsed = @thread_pool.shutdown_and_wait
     if elapsed > 60
-      logger.warn "Waited #{elapsed} seconds for all SolrJWriter threads, you may want to increase solrj_writer.thread_pool (currently #{@settings["solrj_writer.thread_pool"]})"
+      logger.warn "Waited #{elapsed} seconds for all SolrJWriter threads, you may want to increase solr_writer.thread_pool (currently #{@settings["solr_writer.thread_pool"]})"
     end
     logger.debug "SolrJWriter: Thread pool shutdown complete"
     logger.warn "SolrJWriter: #{skipped_record_count} skipped records" if skipped_record_count > 0
